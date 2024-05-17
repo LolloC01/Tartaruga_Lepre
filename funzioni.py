@@ -86,3 +86,14 @@ def posizioni(percorso: list, t: int, h: int) -> None:
             print("H",end="")
         else:
             print("-",end="") #percorso[x]
+
+def check_energy(energia_a: int, energia_richiesta: int) -> bool:
+    if energia_a >= energia_richiesta:
+        return True
+    return False
+
+
+def check_meteo(meteo: str, mossa: int, penalita: int):
+    if meteo == "PIOGGIA":
+        mossa -= penalita
+    return mossa
