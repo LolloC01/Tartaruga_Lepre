@@ -1,83 +1,9 @@
 import random
+import funzioni as f
 
-def tartaruga(t: int) -> int:
-    x: int = random.randint(1,10)
-    if x <= 5:
-        t += 3
-    elif x >= 6 and x <= 7:
-        t -= 6
-    else:
-        t += 1
-    if t <= 0:
-        t = 1
-    return t
-
-def lepre(h: int) -> int:
-    x: int = random.randint(1,10)
-    if x >= 1 and x <= 2:
-        h += 0
-    elif x >= 3 and x <= 4:
-        h += 9
-    elif x == 5:
-        h -= 12
-    elif x >= 6 and x <= 8:
-        h += 1
-    else:
-        h -= 2
-    if h <= 0:
-        h = 1
-    return h
-
-def posizioni(percorso: list, t: int, h: int) -> None:
-    for x in range(len(percorso)):
-        if t == h and x+1 == t:
-            print("OUCH!!!",end=" ")
-        elif (x+1) == t and (x+1) != h:
-            print("T",end=" ")
-        elif (x+1) != t and (x+1) == h:
-            print("H",end=" ")
-        else:
-            print("-",end=" ") #percorso[x]
-
-def posizione(percorso: list, t: int, h: int) -> None:
-    for x in range(len(percorso)):
-        if t == h and x+1 == t:
-            percorso[x] = "OUCH!!!"
-        elif (x+1) == t and (x+1) != h:
-            percorso[x] = "T"
-        elif (x+1) != t and (x+1) == h:
-            percorso[x] = "H"
-        else:
-            percorso[x] = "_"
-    print(percorso)
-
-def check(t: int, h: int) -> bool:
-    if t >= 70 and h >= 70:
-        print("IT'S A TIE.")
-        return True
-    elif h >= 70 and t < 70:
-        print("HARE WINS || YUCH!!!")
-        return True
-    elif t >= 70 and h <= 70:
-        print("TORTOISE WINS! || VAY!!!")
-        return True
-    else: 
-        return False
-
-def meteo(m, t, h) -> int:
-    if m < 10:
-        print("PIOGGIA")
-        t -= 1
-        h -= 2
-        m += 1
-    elif m >= 10 and m < 19:
-        print("SOLE")
-        m += 1
-    elif m == 19:
-        print("SOLE")
-        m = 0
-    return m, t, h
-
+percorso: list = ["_"] * 70
+energia_t = energia_h = 100
+t = h = c = m = 0
 
 def mov_energia_t(energia_t: int, t) -> int:
     x: int = random.randint(1,10)
@@ -133,18 +59,28 @@ def mov_energia_h(energia_h: int, h: int) -> int:
         h = 1
     return energia_h, h
 
+def meteo() -> str:
+    global m
+    if m < 10:
+        m += 1
+        return "PIOGGIA"
+    elif m >= 10 and m < 19:
+        m += 1
+        return "SOLE"
+    elif m == 19:
+        m = 0
+        return "SOLE"
+    return 
 
-percorso: list = ["_"] * 70
-energia_t = energia_h = 100
-t = h = c = m = 0
+time: int = 0
 print("BANG !!!!! AND THEY'RE OFF !!!!!")
 while True:
-    energia_t, t = mov_energia_t(energia_t, t)
-    energia_h, h = mov_energia_h(energia_h, h)
-    m, t, h = meteo(m, t, h)
-    posizioni(percorso,t,h)
+    current_meteo = meteo()
+    t = f.tartaruga_meteo(t, current_meteo)
+    h = f.lepre_meteo(h, current_meteo)
+    f.posizioni(percorso,t,h)
     print(c)
-    if check(t,h):
+    if f.check(t,h):
         break
     c += 1
 
